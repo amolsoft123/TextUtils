@@ -7,7 +7,9 @@ def index(request):
 def analyze(request):
     djtext = request.GET.get('text', 'default')
     removepunc=request.GET.get('removepunc', 'off')
+    fullcaps=request.GET.get('fullcaps', 'off')
     #analyzed = djtext
+    
     if removepunc == "on":
         punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
         analyzed = ""
@@ -16,5 +18,13 @@ def analyze(request):
                 analyzed = analyzed + char
         params = {'purpose':"Removing Punctuations", 'analyzed_text':analyzed}
         return render(request, 'analyze.html', params)
+
+    elif(fullcaps=="on"):
+        analyzed= ""
+        for char in djtext:
+            analyzed = analyzed + char.upper()
+        params = {'purpose':"Change To Uppercase", 'analyzed_text':analyzed}
+        return render(request, 'analyze.html', params)
+
     else:
         return HttpResponse('Error')
